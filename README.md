@@ -96,6 +96,6 @@ Feel free to check out their profiles and connect with them!
   - [GitHub Profile](https://github.com/darshan-rajanna)
   - Role: Project Lead, Backend Development, Database Design
 - **M. Kusuma**  
-  - [GitHub Profile](https://github.com/Kusumaa2003) *(Replace with actual GitHub link if available)*  
+  - [GitHub Profile](https://github.com/Kusumaa2003)  
   - Role: Frontend Development, UI/UX Design
 
