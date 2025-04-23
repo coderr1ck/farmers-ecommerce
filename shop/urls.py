@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, category_page, product_detail, cart, checkout, profile, add_item, register, login_view, add_review, logout_view, search,add_to_cart,remove_from_cart,payment_page,process_payment,payment_success, about_us
+from .views import home,edit_item,category_page,delete_item, product_detail, cart, checkout, profile, add_item, register, login_view, add_review, logout_view, search,add_to_cart,remove_from_cart,payment_page,process_payment,payment_success, about_us
 
 urlpatterns = [
     path('', home, name='home'),
@@ -20,4 +20,6 @@ urlpatterns = [
     path('process-payment/', process_payment, name='process_payment'),
     path('payment-success/<str:transaction_id>/', payment_success, name='payment_success'),
     path('about-us/', about_us, name='about_us'),
+    path('delete-item/<int:item_id>/', delete_item, name='delete_item'),  # Delete item route
+    path('edit-item/<int:item_id>/', edit_item, name='edit_item'),  # Edit item route
 ]

@@ -75,29 +75,24 @@
         <!-- Center content vertically -->
         <div>
           <p class="text-justify">{{ item.description }}</p>
+          <p class="">Call :  {{ phone }}</p>
+          <p>Vendor Name :  {{ name }}</p>
+          <p>Address :  {{ address }}</p>
           <!-- Justified description -->
-          <p class="price"><strong>Price:</strong> ₹{{ item.price }}</p><p> per {{item.size}}</p>
+          <p class="price"><strong>Price:</strong> ₹{{ item.price }} per {{item.size}}</p>
           <!-- Price styling -->
           <form method="POST" action="{% url 'add_to_cart' item.id %}">
             {% csrf_token %}
-            <div class="form-group">
-              <label for="quantity">Quantity:</label>
-              <input
-                type="number"
-                class="form-control quantity-input"
-                id="quantity"
-                name="quantity"
-                value="1"
-                min="1"
-              />
+            <div class="form-group price">
+              <div>Stock : {{stock}} unit</div>
               <!-- Quantity input -->
             </div>
-            <button
+            <!-- <button
               type="submit"
               class="btn btn-primary btn-lg add-to-cart-button"
             >
               Add to Cart
-            </button>
+            </button> -->
             <!-- Add to cart button -->
           </form>
           <hr />
@@ -108,7 +103,7 @@
 </div>
 
 <!-- Reviews Section -->
-<div class="container shadow-container text-center mt-5">
+<!-- <div class="container shadow-container text-center mt-5">
   <h4 class="reviews-header">Reviews</h4>
   <div class="reviews">
     {% for review in reviews %}
@@ -126,6 +121,66 @@
       >Add Review</a
     >
   </div>
+</div> -->
+
+<div class="container shadow-container text-center mt-5 mb-5">
+  <h4 class="reviews-header">Comparative Analysis</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <!-- <th scope="col">S.no</th> -->
+        <th scope="col">Farmer</th>
+        <th scope="col">Product</th>
+        <th scope="col">Price</th>
+        <th scope="col">Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for prod in comparative_products %}
+      <tr>
+        <!-- <th scope="row"></th> -->
+        <td>{{prod.farmer}}</td>
+        <td>{{prod.name}}</td>
+        <td>{{prod.price}}</td>
+        <td>
+          <a href="{% url 'product_detail' prod.id %}" class="btn btn-link">
+            View Details
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="container shadow-container text-center mt-5 mb-5">
+  <h4 class="reviews-header">Other Products </h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <!-- <th scope="col">S.no</th> -->
+        <th scope="col">Farmer</th>
+        <th scope="col">Product</th>
+        <th scope="col">Price</th>
+        <th scope="col">Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for prod in related_items %}
+      <tr>
+        <!-- <th scope="row"></th> -->
+        <td>{{prod.farmer}}</td>
+        <td>{{prod.name}}</td>
+        <td>{{prod.price}}</td>
+        <td>
+          <a href="{% url 'product_detail' prod.id %}" class="btn btn-link">
+            View Details
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
 <style>

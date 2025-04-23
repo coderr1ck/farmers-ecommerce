@@ -1,4 +1,14 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
+ <!-- Hero Section -->
+ <header class="hero-section scaled-component">
+  <div class="container">
+    <h1>Welcome to AGRiFARM</h1>
+    <p>"Your one-stop solution for farm-fresh produce!"</p>
+    <a href="{% url 'category_page' 1 %}" class="btn btn-primary"
+      >Shop Now</a
+    >
+  </div>
+</header>
 
 <!-- Categories Section -->
 <div class="container">
@@ -64,15 +74,22 @@
         </a>
         <h5>{{ item.name }}</h5>
         <p class="text-muted">₹{{ item.price }} / {{ item.size }}</p>
-
+        <div class="d-flex align-items-center justify-content-center">
+          <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 0.5rem;" width="16" height="16" fill="currentColor" class="bi bi-person me-2" viewBox="0 0 16 16">
+              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+          </svg>
+          <p class="mb-0 ms-2">{{item.farmer}}</p>
+      </div>
         <a href="{% url 'product_detail' item.id %}" class="btn btn-success"
           >View Details</a
         >
+        {% if user.role == 'Consumer' %}
         <a
           href="{% url 'add_to_cart' item.id %}"
           class="btn btn-outline-success mt-2"
           >Add to Cart</a
         >
+        {% endif %}
       </div>
     </div>
     {% endfor %}
@@ -81,7 +98,7 @@
 
 <style>
   .product-card {
-    height: 400px; /* Fixed height for uniformity */
+    height: 450px; /* Fixed height for uniformity */
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Space out content evenly */

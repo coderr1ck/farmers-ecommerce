@@ -53,15 +53,15 @@
 <h2 class="text-center font-weight-bold" style="font-size: 2rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">{{ category.name }}</h2>
 
 <!-- Filter Options -->
-<div class="text-center mb-4">
-    <form method="GET" class="form-inline justify-content-center">
+<div class="text-center mb-4">-
+    <!-- <form method="GET" class="form-inline justify-content-center">
         <select name="sort" class="form-control mb-2 mr-2" style="width: 200px;">
             <option value="price">Sort by Price</option>
             <option value="alphabet">Sort by Alphabet</option>
             <option value="date">Sort by Date</option>
         </select>
         <button type="submit" class="btn btn-secondary mb-2" style="background-color: #218838; color: white;" >Apply</button>
-    </form>
+    </form> -->
 </div>
 
 <div class="row">
@@ -73,9 +73,17 @@
                 </a>
                 <h5 class="card-title">{{ item.name }}</h5>
                 <p class="text-muted">₹{{ item.price }}</p>
+                <div class="d-flex align-items-center justify-content-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 0.5rem;" width="16" height="16" fill="currentColor" class="bi bi-person me-2" viewBox="0 0 16 16">
+                      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                  </svg>
+                  <p class="mb-0 ">{{item.farmer}}</p>
+              </div>
 
                 <a href="{% url 'product_detail' item.id %}" class="btn" style="background-color: #218838; color: white;">View Details</a>
+                {% if user.role == 'Consumer' %}
                 <a href="{% url 'add_to_cart' item.id %}" class="btn btn-outline-success mt-2" >Add to Cart</a>
+                {% endif %}
             </div>
         </div>
     {% endfor %}
@@ -84,7 +92,7 @@
 <!-- CSS for Card Hover Effect -->
 <style>
     .product-card {
-        height: 400px; /* Fixed height for uniformity */
+        height: 450px; /* Fixed height for uniformity */
         display: flex;
         flex-direction: column;
         justify-content: space-between; /* Space out content evenly */

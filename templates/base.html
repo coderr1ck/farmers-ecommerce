@@ -331,9 +331,11 @@
             <a class="nav-link" href="{% url 'add_item' %}">Add Item</a>
           </li>
           {% endif %}
+          {% if user.role == 'Consumer' %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'cart' %}">Cart</a>
           </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'profile' %}">Profile</a>
           </li>
@@ -372,16 +374,6 @@
       </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="hero-section">
-      <div class="container">
-        <h1>Welcome to AGRiFARM</h1>
-        <p>"Your one-stop solution for farm-fresh produce!"</p>
-        <a href="{% url 'category_page' 1 %}" class="btn btn-primary"
-          >Shop Now</a
-        >
-      </div>
-    </header>
 
     <!-- Main Content -->
     <div class="container">{% block content %}{% endblock %}</div>
@@ -433,7 +425,7 @@
           </div>
         </div>
         <hr class="bg-white" />
-        <p>&copy; 2024  AGRiFARM Farmers E-commerce. All Rights Reserved.</p>
+        <p>&copy; 2025  AGRiFARM Farmers E-commerce. All Rights Reserved.</p>
       </div>
     </footer>
 

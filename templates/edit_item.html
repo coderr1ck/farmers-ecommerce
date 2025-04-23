@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Main container with Bootstrap's spacing utilities -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <!-- Card for editing product -->
+    <div class="col-md-6">
+      <div class="card shadow-sm border-light">
+        <div class="card-header text-center bg-light">
+          <h4>Edit Product: {{ item.name }}</h4>
+        </div>
+        <div class="card-body">
+          <!-- Edit Product Form -->
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- Manually add class to form fields -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Product Name</label>
+              <input type="text" name="name" value="{{ item.name }}" class="form-control">
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea name="description" class="form-control">{{ item.description }}</textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="price" class="form-label">Price</label>
+              <input type="number" name="price" value="{{ item.price }}" class="form-control">
+            </div>
+
+            <div class="mb-3">
+              <label for="category" class="form-label">Category</label>
+              <select name="category" class="form-control">
+                <!-- Populate categories dynamically -->
+                {% for category in categories %}
+                  <option value="{{ category.id }}" {% if item.category.id == category.id %} selected {% endif %}>
+                    {{ category.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="image" class="form-label">Product Image</label>
+              <input type="file" name="image" class="form-control-file">
+            </div>
+
+            <!-- Submit Button with Bootstrap's button styles -->
+            <div class="text-center">
+              <button type="submit" class="btn btn-success btn-lg">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

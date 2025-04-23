@@ -12,6 +12,7 @@ class User(AbstractUser):
         ('Farmer', 'Farmer'),
         ('Consumer', 'Consumer'),
     )
+    phone = models.CharField(max_length=15)
     address = models.TextField(blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Consumer')
 

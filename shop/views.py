@@ -6,8 +6,9 @@ from django.contrib.auth import authenticate, login
 from django.db.models import Q
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
-from .models import Category  # Ensure you have the correct import for Category
-
+from .models import Category
+from .models import User  # Ensure you have the correct import for Category
+import random
 
 # Home Page
 def home(request):
@@ -36,8 +37,13 @@ def product_detail(request, item_id):
     categories = Category.objects.all()
     item = get_object_or_404(Item, id=item_id)
     reviews = Review.objects.filter(item=item)
-    related_items = Item.objects.filter(category=item.category).exclude(id=item_id)[:3]  # Display related products
-    return render(request, 'product_detail.html', {'categories': categories,'item': item, 'reviews': reviews, 'related_items': related_items})
+    user = User.objects.get(id=item.farmer.id)
+    related_products = Item.objects.filter(farmer=user).exclude(id=item.id);
+    comparative_products = Item.objects.filter(
+        Q(name__icontains=item.name)
+    ).exclude(id=item.id).exclude(farmer=user)
+    print(related_products)  # Get the farmer's user object  
+    return render(request, 'product_detail.html', {'categories': categories,'item': item, 'reviews': reviews, 'related_items': related_products,'name':item.farmer,'stock':item.stock,'phone':user.phone,'address':user.address,'comparative_products': comparative_products})
 
 # Cart Page
 @login_required
@@ -80,11 +86,52 @@ def checkout(request):
 # Profile Page
 from django.shortcuts import render
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Category, Order, Item
+
+@login_required
 def profile(request):
     categories = Category.objects.all()
     user = request.user
     orders = user.order_set.all().order_by('-ordered_date')  # Order by newest first
-    return render(request, 'profile.html', {'categories': categories,'user': user, 'orders': orders})
+    items = Item.objects.filter(farmer=user)  # Fetch products (items) listed by the user
+    
+    return render(request, 'profile.html', {
+        'categories': categories,
+        'user': user,
+        'orders': orders,
+        'items': items,  # Pass items to the template
+    })
+
+
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Item
+
+
+@login_required
+def delete_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id, farmer=request.user)  # Ensure the item belongs to the user
+    if request.method == 'POST':
+        item.delete()  # Delete the item
+        return redirect('profile')  # Redirect back to profile after deletion
+
+
+@login_required
+def edit_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id, farmer=request.user)  # Make sure the item belongs to the logged-in user
+    
+    if request.method == 'POST':
+        form = ItemForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()  # Save the edited item
+            return redirect('profile')  # Redirect back to the profile page
+    else:
+        form = ItemForm(instance=item)  # Prepopulate the form with the current item's data
+
+    return render(request, 'edit_item.html', {'form': form, 'item': item , 'categories': Category.objects.all()})  # Pass categories to the template
+
 
 
 # Add Item Page (For Farmers)
@@ -113,14 +160,16 @@ def register(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
-            user.role = form.cleaned_data['role']  # Set the user role
-            user.address = form.cleaned_data['address']  # Set the user address
+            user.role = form.cleaned_data['role']
+            user.address = form.cleaned_data['address']
+            user.phone = form.cleaned_data['phone']  # Save phone
             user.save()
             login(request, user)
             return redirect('home')
     else:
         form = UserForm()
     return render(request, 'register.html', {'categories': categories, 'form': form})
+
 
 
 # Login Page

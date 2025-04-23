@@ -54,7 +54,7 @@ class UserForm(forms.ModelForm):
     
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'role', 'address']
+        fields = ['username', 'email', 'password', 'role', 'address','phone']
 
 # Category form
 class CategoryForm(forms.ModelForm):
